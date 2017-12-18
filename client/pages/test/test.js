@@ -1,66 +1,24 @@
-// pages/test/test.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    listData: [
+      { "code": "1", "text": "1", "type": "01" },
+      { "code": "2", "text": "1", "type": "01" },
+      { "code": "03", "text": "01", "type": "01" },
+      { "code": "04", "text": "01", "type": "01" },
+      { "code": "05", "text": "01", "type": "01" },
+      { "code": "06", "text": "01", "type": "01" },
+      { "code": "07", "text": "01", "type": "01" },
+      { "code": "07", "text": "01", "type": "01" },
+      { "code": "07", "text": "01", "type": "01" }
+    ]
+  },
+  onLoad: function () {
+    console.log('onLoad')
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  click: function(event) {
+    console.log('onLoad')
+    console.log(event)
   }
+
 })

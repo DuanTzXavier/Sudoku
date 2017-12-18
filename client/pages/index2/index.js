@@ -21,7 +21,7 @@ Page({
     })
     setTimeout(function(){
       wx.redirectTo({
-        url: '../index/index'
+        url: '../test/test'
       })
     }, 1000)
     
@@ -56,7 +56,15 @@ Page({
       },
 
       fail(error) {
+        console.log('request fail', error)
         wx.hideToast()
+
+        if (error.type != 'ERR_WX_GET_USER_INFO'){
+          wx.showToast({
+            title: '登录失败',
+          })
+          return
+        }
         wx.showModal({
           title: '警告',
           content: '若不授权微信登录，则无法使用Sudoku数独功能，点击重新获取授权，则可重新使用',
@@ -66,7 +74,7 @@ Page({
             if (res.confirm) {
               wx.openSetting({
                 success: function (res) {
-                  if (res.authSetting["scope.userInfo"]) {
+                  if (!res.authSetting["scope.userInfo"]) {
                     wx.showToast({
                       title: '登录失败',
                     })

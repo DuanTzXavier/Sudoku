@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/addCgi/addCgi",
     "pages/index2/index",
+    "pages/addCgi/addCgi",
+    "pages/index/index",
     "pages/test/test"
   ],
   "window": {
