@@ -13,7 +13,6 @@
 .td {
     width:80rpx;
     height: 80rpx;
-    background: bisque;
     border: 1px solid darkgray;
     text-align: center;
     line-height: 80rpx;

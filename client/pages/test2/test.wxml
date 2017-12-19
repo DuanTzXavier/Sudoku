@@ -1,0 +1,7 @@
+<view class="table">
+  <view class="tr" wx:for="{{listData}}" wx:key="{{items}}">
+    <view class="tds" data-hi="{{itemx.position}}" style="background:{{itemx.color}};" wx:for="{{item.items}}" wx:for-item="itemx" wx:key="itemx" bindtap='click'>
+      <text>{{itemx.number}}</text>
+    </view>
+  </view>
+</view>

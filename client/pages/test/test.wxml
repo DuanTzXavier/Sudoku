@@ -1,19 +1,26 @@
 <view class="table">
   <block wx:for="{{listData}}" wx:key="{{code}}">
-    <view class="tr bg-g">
+    <view class="tr" wx:if="{{index>2&&index<6}}">
+      <view class="tds" style="background:{{viewBg}};" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
+      <view class="td" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
+      <view class="td" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
+      <view class="td1" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
+      <view class="td1" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
+      <view class="td1" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
       <view class="td" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
-      <view class="td" bindtap='click'>
-        <text class="center">{{item.text}}</text>
-      </view>
-      <view class="td" bindtap='click'>{{item.type}}</view>
-      <view class="td" bindtap='click'>{{item.code}}</view>
-      <view class="td" bindtap='click'>{{item.text}}</view>
-      <view class="td" bindtap='click'>{{item.type}}</view>
-      <view class="td" bindtap='click'>{{item.code}}</view>
-      <view class="td" bindtap='click'>{{item.text}}</view>
-      <view class="td" bindtap='click'>{{item.type}}</view>
+      <view class="td" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
+      <view class="td" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
     </view>
-
-
+    <view class="tr" wx:else>
+      <view class="td1" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
+      <view class="td1" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
+      <view class="td1" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
+      <view class="td" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
+      <view class="td" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
+      <view class="td" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
+      <view class="td1" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
+      <view class="td1" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
+      <view class="td1" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
+    </view>
   </block>
 </view>
