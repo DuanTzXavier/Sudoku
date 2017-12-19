@@ -1,3 +1,5 @@
+var util = require('../../utils/util.js')
+
 Page({
 
   data: {
@@ -69,13 +71,8 @@ Page({
     this.resumeLastClickPosition()
 
     var position = event.currentTarget.dataset.hi.split("")
-    
-    this.data.lastClick = new Object()
-    this.data.lastClick.position = position
-    this.data.lastClick.color = this.data.listData[position[1]].items[position[0]].color
 
     this.selectPosition(position)
-
   },
 
   checkEditable:function (position){
@@ -83,10 +80,15 @@ Page({
   },
   resumeLastClickPosition: function(){
     if (this.data.lastClick != undefined) {
-      this.setData({
-        listData: new Object(this.data.originListData)
-      })
+      
+      // this.setData({
+      //   listData: new Object(this.data.originListData)
+      // })
     }
+    // this.data.listData = new Object(this.data.originListData)
+    this.data.listData = util.cloneObject(this.data.originListData)
+    console.log(this.data.listData)
+    console.log(this.data.originListData)
   },
   selectPosition: function(position){
     this.selectRow(position)
@@ -102,22 +104,19 @@ Page({
     var positionRow = parseInt(position[1]/3)
     for (var x = positionRow * 3; x < positionRow * 3 + 3; x++){
       for (var y = positionColumn * 3; y < positionColumn * 3 + 3; y++) {
-        this.data.listData[x].items[y].color = "darkgray"
+        this.data.listData[x].items[y].color = "cadetblue"
       }
     }
-
-    console.log(positionRow)
-    console.log(positionColumn)
   },
   selectColumn: function (position){
     for (var index = 0; index < 9; index++){
-      this.data.listData[index].items[position[0]].color = "darkgray"
+      this.data.listData[index].items[position[0]].color = "cadetblue"
     }
   },
   selectRow: function (position){
     var tempData = this.data.listData
     for (var index = 0; index < 9; index++) {
-      this.data.listData[position[1]].items[index].color = "darkgray"
+      this.data.listData[position[1]].items[index].color = "cadetblue"
     }
   },
 })

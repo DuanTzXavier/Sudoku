@@ -39,22 +39,31 @@ var showModel = (title, content) => {
     })
 }
 
-var showAuthModel = function(callback) {
-  wx.showModal({
-    title: '警告',
-    content: '若不授权微信登录，则无法使用Sudoku数独功能，点击重新获取授权，则可重新使用',
-    confirmText: '授权',
-    cancelText: '不授权',
-    success: function (res) {
-      if (res.confirm) {
-        // (callback && typeof (callback) === "function") && callback();
-      } else if (res.cancel) {
-        wx.showToast({
-          title: '登录失败',
-        })
-      }
+// var showAuthModel = function(callback) {
+//   wx.showModal({
+//     title: '警告',
+//     content: '若不授权微信登录，则无法使用Sudoku数独功能，点击重新获取授权，则可重新使用',
+//     confirmText: '授权',
+//     cancelText: '不授权',
+//     success: function (res) {
+//       if (res.confirm) {
+//         // (callback && typeof (callback) === "function") && callback();
+//       } else if (res.cancel) {
+//         wx.showToast({
+//           title: '登录失败',
+//         })
+//       }
+//     }
+//   })
+// }
+var cloneObject = (obj) => {
+  var o = obj.constructor === Array ? [] : {};
+  for (var i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      o[i] = typeof obj[i] === "object" ? cloneObject(obj[i]) : obj[i];
     }
-  })
+  }
+  return o
 }
+module.exports = { formatTime, showBusy, showSuccess, showModel, cloneObject }
 
-module.exports = { formatTime, showBusy, showSuccess, showModel }
