@@ -1,26 +1,10 @@
 <view class="table">
-  <block wx:for="{{listData}}" wx:key="{{code}}">
-    <view class="tr" wx:if="{{index>2&&index<6}}">
-      <view class="tds" style="background:{{viewBg}};" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
-      <view class="td" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
-      <view class="td" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
-      <view class="td1" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
-      <view class="td1" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
-      <view class="td1" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
-      <view class="td" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
-      <view class="td" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
-      <view class="td" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
+  <view class="tr" wx:for="{{listData}}" wx:key="{{items}}">
+    <view class="tds" data-hi="{{itemx.position}}" style="background:{{itemx.color}};" wx:for="{{item.items}}" wx:for-item="itemx" wx:key="itemx" bindtap='click'>
+      <text>{{itemx.number}}</text>
     </view>
-    <view class="tr" wx:else>
-      <view class="td1" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
-      <view class="td1" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
-      <view class="td1" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
-      <view class="td" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
-      <view class="td" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
-      <view class="td" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
-      <view class="td1" data-hi="{{item.code}}" bindtap='click'>{{item.code}}</view>
-      <view class="td1" data-hi="{{item.text}}" bindtap='click'>{{item.text}}</view>
-      <view class="td1" data-hi="{{item.type}}" bindtap='click'>{{item.type}}</view>
-    </view>
-  </block>
+  </view>
 </view>
+
+<view bindtap='test'>test</view>
+<view bindtap='test2'>test2</view>

@@ -65,5 +65,30 @@ var cloneObject = (obj) => {
   }
   return o
 }
-module.exports = { formatTime, showBusy, showSuccess, showModel, cloneObject }
+
+var remove =  (array, dx) => {
+  var index = indexOf(array, dx)
+  if (index != -1){
+    array.splice(index, 1)
+    return true
+  }else{
+    return false
+  }
+} 
+
+var indexOf = (array, dx) => {
+  for (var index in array){
+    if (dx == array[index]){
+      return index
+    }
+  }
+  return -1
+}
+
+var removeAll = (array, dx) => {
+  while(indexOf(array, dx) != -1){
+    remove(array, dx)
+  }
+}
+module.exports = { formatTime, showBusy, showSuccess, showModel, cloneObject, remove, removeAll }
 

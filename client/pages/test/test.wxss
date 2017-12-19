@@ -27,12 +27,15 @@
     line-height: 80rpx;
 }
 .tds {
-  width:80rpx;
+    width:80rpx;
     height: 80rpx;
     border: 1px solid darkgray;
     text-align: center;
     line-height: 80rpx;
 }
+.tds text {  
+  font-size: 32rpx;
+}  
 .bg-g{
   background: #E6F3F9;
 }
