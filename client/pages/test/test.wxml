@@ -10,3 +10,6 @@
 <view bindtap='test'>test</view>
 <view bindtap='test2'>test2</view>
 <view bindtap='test3'>test3</view>
+<view bindtap='test4'>test4</view>
+<view bindtap='test5'>test5</view>
+<view bindtap='findLine'>test6</view>

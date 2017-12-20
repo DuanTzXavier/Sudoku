@@ -90,5 +90,14 @@ var removeAll = (array, dx) => {
     remove(array, dx)
   }
 }
-module.exports = { formatTime, showBusy, showSuccess, showModel, cloneObject, remove, indexOf, removeAll }
+
+var isContains = (str, substr) => {
+  return str.indexOf(substr) >= 0
+}
+
+var isSame = (str, str2) => {
+  return str.toString() == str2.toString()
+}
+
+module.exports = { formatTime, showBusy, showSuccess, showModel, cloneObject, remove, indexOf, removeAll, isContains, isSame }
 
