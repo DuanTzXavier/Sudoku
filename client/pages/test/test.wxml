@@ -2,9 +2,11 @@
   <view class="tr" wx:for="{{listData}}" wx:key="{{items}}">
     <view class="tds" data-hi="{{itemx.position}}" style="background:{{itemx.color}};" wx:for="{{item.items}}" wx:for-item="itemx" wx:key="itemx" bindtap='click'>
       <text>{{itemx.number}}</text>
+      <view class="temp"><text>{{itemx.temp}}</text></view>
     </view>
   </view>
 </view>
 
 <view bindtap='test'>test</view>
 <view bindtap='test2'>test2</view>
+<view bindtap='test3'>test3</view>

@@ -1,4 +1,5 @@
 var util = require('../../utils/util.js')
+var sudoku = require('../../utils/sudoku.js')
 
 Page({
 
@@ -6,8 +7,8 @@ Page({
     listData: {},
     lastClick: undefined,
     originListData: {},
-    ALL_NUMBER:[1,2,3,4,5,6,7,8,9,],
-    positions:{}
+    ALL_NUMBER: [1, 2, 3, 4, 5, 6, 7, 8, 9,],
+    positions: {}
   },
 
   onLoad: function () {
@@ -95,7 +96,7 @@ Page({
     }
 
     this.setData({
-      listData: this.data.listData
+      listData: this.data.listData,
     })
   },
 
@@ -111,7 +112,7 @@ Page({
     this.selectSquared(position)
     this.setData({
       listData: this.data.listData,
-      lastClick:position
+      lastClick: position,
     })
   },
   selectSquared: function (position) {
@@ -134,21 +135,22 @@ Page({
     }
   },
 
-  test: function(){
+  test: function () {
+    this.data.listData = util.cloneObject(this.data.originListData)
     for (var i = 0; i < 9; i++) {
       for (var j = 0; j < 9; j++) {
-          var position = new Array()
-          position.push(i)
-          position.push(j)
-          if (this.checkEditable(position)){
-            this.nineNumberUnique(position)
-          }
+        var position = new Array()
+        position.push(i)
+        position.push(j)
+        if (this.checkEditable(position)) {
+          this.nineNumberUnique(position)
+        }
       }
     }
-    
+
   },
 
-  nineNumberUnique: function(position){
+  nineNumberUnique: function (position) {
     var AllNumber = util.cloneObject(this.data.ALL_NUMBER)
 
     for (var index = 0; index < 9; index++) {
@@ -166,60 +168,190 @@ Page({
       }
     }
     var positionList = new Array()
-    if (AllNumber.length == 1){
+    if (AllNumber.length == 1) {
       this.data.listData[position[1]].items[position[0]].editable = false
-    }else{
+      this.data.listData[position[1]].items[position[0]].number = AllNumber
+    } else {
       positionList.push(position)
+      this.data.listData[position[1]].items[position[0]].temp = AllNumber
+      console.log(this.data.listData[position[1]].items[position[0]])
     }
-    this.data.listData[position[1]].items[position[0]].number = AllNumber
-    console.log(AllNumber)
+
     this.setData({
       listData: this.data.listData,
-      positions:positionList,
+      positions: positionList,
+      originListData: util.cloneObject(this.data.listData)
     })
   },
 
   test2: function () {
-    // for (var i = 0; i < 9; i++) {
-    //   for (var j = 0; j < 9; j++) {
-    //     var position = new Array()
-    //     position.push(i)
-    //     position.push(j)
-    //     if (this.checkEditable(position)) {
-    //       this.nineNumberUnique(position)
-    //     }
-    //   }
-    // }
+    // var AllNumber = util.cloneObject(this.data.ALL_NUMBER)
+    // AllNumber.push(1)
+    // AllNumber = AllNumber.concat(this.data.ALL_NUMBER)
+    // console.log(AllNumber)
+    // console.log(sudoku.findUnique(AllNumber))
 
-    var AllNumber = util.cloneObject(this.data.ALL_NUMBER)
-    AllNumber.push(1)
-    console.log(this.removeSameNumber(AllNumber))
+    this.data.listData = util.cloneObject(this.data.originListData)
+    this.findSquarePosition()
+  },
 
-   
-    // for (var index in positions){
-      
-    // }
+  findSquarePosition: function () {
+    for (var squareX = 0; squareX < 3; squareX++) {
+      for (var squareY = 0; squareY < 3; squareY++) {
+        var arr = new Array()
+        arr.push(squareY)
+        arr.push(squareX)
+        var tempNumbers = this.findSquareAll(arr)
+        this.connectFindUnique(tempNumbers)
+      }
+    }
 
   },
 
-  removeSameNumber: function (AllNumber){
-    for (var index in AllNumber){
-      var x = this.isShowMore(AllNumber[index], AllNumber)
-      if (x > 1){
-        util.removeAll(AllNumber, AllNumber[index])
+  findSquareAll: function (position) {
+    var positionColumn = position[0]
+    var positionRow = position[1]
+    var tempNumbers = new Array()
+    for (var x = positionRow * 3; x < positionRow * 3 + 3; x++) {
+      for (var y = positionColumn * 3; y < positionColumn * 3 + 3; y++) {
+        if (this.data.listData[x].items[y].editable) {
+          tempNumbers.push(this.data.listData[x].items[y])
+        }
       }
     }
-    return AllNumber
+
+    return tempNumbers
   },
 
-  isShowMore: function(value, AllNumber){
-    var x = 0
-    for (var index in AllNumber) {
-      if (AllNumber[index] == value) {
-        x++
+  connectFindUnique: function (tempNumbers) {
+    var tempArr = new Array()
+    for (var i = 0; i < tempNumbers.length; i++) {
+      tempArr = tempArr.concat(tempNumbers[i].temp)
+    }
+    var uniqueArr = sudoku.findUnique(tempArr)
+    if (uniqueArr.length > 0) {
+      for (var i = 0; i < uniqueArr.length; i++) {
+        for (var j = 0; j < tempNumbers.length; j++) {
+          if (util.indexOf(tempNumbers[j].temp, uniqueArr[i]) != -1) {
+            var position = tempNumbers[j].position.split("")
+            this.setValue(position, uniqueArr[i])
+          }
+        }
+      }
+
+      this.setData({
+        listData: this.data.listData,
+        originListData: util.cloneObject(this.data.listData)
+      })
+    }
+  },
+
+  setValue: function (position, value) {
+    if (this.checkEditable(position)) {
+      this.data.listData[position[1]].items[position[0]].editable = false
+      this.data.listData[position[1]].items[position[0]].number = value
+      this.data.listData[position[1]].items[position[0]].temp = undefined
+    } else {
+      console.log("ERROR 0011 数独错误")
+    }
+  },
+  test3: function () {
+    this.findSquarePositionS()
+
+    
+    for (var i = 0; i < 9; i++) {
+      var arr = new Array()
+      for (var j = 0; j < 9; j++) {
+        var position = new Array()
+        position.push(i)
+        position.push(j)
+        if (this.checkEditable(position)) {
+          arr.push(this.data.listData[i].items[j])
+        }
+      }
+      this.findGroup(arr)
+    }
+
+    for (var i = 0; i < 9; i++) {
+      var arr = new Array()
+      for (var j = 0; j < 9; j++) {
+        var position = new Array()
+        position.push(i)
+        position.push(j)
+        if (this.checkEditable(position)) {
+          arr.push(this.data.listData[j].items[i])
+        }
+      }
+      this.findGroup(arr)
+    }
+  },
+
+  findSquarePositionS: function () {
+    for (var squareX = 0; squareX < 3; squareX++) {
+      for (var squareY = 0; squareY < 3; squareY++) {
+        var arr = new Array()
+        arr.push(squareY)
+        arr.push(squareX)
+        var tempNumbers = this.findSquareAll(arr)
+        this.findGroup(tempNumbers)
       }
     }
-    return x
+
+  },
+
+  findGroup: function (tempNumbers) {
+    for (var i = 0; i < tempNumbers.length;i++){
+      if (tempNumbers[i].temp.length > tempNumbers.length){
+        continue
+      }else{
+        var times = this.compareAll(tempNumbers, tempNumbers[i].temp)
+        if (tempNumbers[i].temp.length == times){
+          this.removeAllSame(tempNumbers, tempNumbers[i].temp)
+        } else if (tempNumbers[i].temp.length < times){
+          console.log("ERROR 0012 数独错误")
+        } else {
+          //TODO Nothing
+        }
+      }
+    }
+  },
+
+  compareAll: function (tempNumbers, temp){
+    var times = 0; 
+    for (var i = 0; i < tempNumbers.length; i++) {
+      if (this.isContains(temp.toString(), tempNumbers[i].temp.toString())) {
+        times++
+      }
+    }
+    return times
+  },
+
+  removeAllSame: function (tempNumbers, temp){
+    for (var i = 0; i < tempNumbers.length; i++) {
+      if (!this.isContains(temp.toString(), tempNumbers[i].temp.toString())) {
+        for (var j = 0; j < temp.length; j++) {
+          util.remove(tempNumbers[i].temp, temp[j])
+        }
+        var position = tempNumbers[i].position.split("")
+        this.setTemp(position, tempNumbers[i].temp)
+        console.log(position)
+      }
+    }
+  },
+
+  isContains:function(str, substr) {
+    console.log(str)
+    console.log(substr)
+    console.log(str.indexOf(substr) >= 0)
+    return str.indexOf(substr) >= 0
+  },
+
+  setTemp: function (position, value) {
+    if (this.checkEditable(position)) {
+      this.data.listData[position[1]].items[position[0]].temp = value
+    } else {
+      console.log("ERROR 1111 数独错误")
+    }
   },
 
 

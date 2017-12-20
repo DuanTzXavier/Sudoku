@@ -90,5 +90,5 @@ var removeAll = (array, dx) => {
     remove(array, dx)
   }
 }
-module.exports = { formatTime, showBusy, showSuccess, showModel, cloneObject, remove, removeAll }
+module.exports = { formatTime, showBusy, showSuccess, showModel, cloneObject, remove, indexOf, removeAll }
 

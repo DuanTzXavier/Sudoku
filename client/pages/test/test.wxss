@@ -33,9 +33,9 @@
     text-align: center;
     line-height: 80rpx;
 }
-.tds text {  
-  font-size: 32rpx;
-}  
+.temp text {
+  font-size: 15rpx;
+}
 .bg-g{
   background: #E6F3F9;
 }
