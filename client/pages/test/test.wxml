@@ -2,7 +2,9 @@
   <view class="tr" wx:for="{{listData}}" wx:key="{{items}}">
     <view class="tds" data-hi="{{itemx.position}}" style="background:{{itemx.color}};" wx:for="{{item.items}}" wx:for-item="itemx" wx:key="itemx" bindtap='click'>
       <text>{{itemx.number}}</text>
-      <view class="temp"><text>{{itemx.temp}}</text></view>
+      <view class="temp">
+        <text>{{itemx.temp}}</text>
+      </view>
     </view>
   </view>
 </view>
@@ -13,3 +15,23 @@
 <view bindtap='test4'>test4</view>
 <view bindtap='test5'>test5</view>
 <view bindtap='findLine'>test6</view>
+
+<view class='row'>
+  <view class='function'>
+    <text class='item'>1</text>
+    <text class='item'>1</text>
+    <text class='item'>1</text>
+    <text class='item'>1</text>
+  </view>
+  <view class='column'>
+    <text class='item' data-hi="1" bindtap="click1">1</text>
+    <text class='item' data-hi="2" bindtap="click1">2</text>
+    <text class='item' data-hi="3" bindtap="click1">3</text>
+    <text class='item' data-hi="4" bindtap="click1">4</text>
+    <text class='item' data-hi="5" bindtap="click1">5</text>
+    <text class='item' data-hi="6" bindtap="click1">6</text>
+    <text class='item' data-hi="7" bindtap="click1">7</text>
+    <text class='item' data-hi="8" bindtap="click1">8</text>
+    <text class='item' data-hi="9" bindtap="click1">9</text>
+  </view>
+</view>

@@ -49,3 +49,26 @@
     align-items: flex-start;
     box-sizing: border-box;
 }
+.row{
+    width:100%;
+    text-align: center;
+    line-height: 80rpx;
+}
+.column{
+  width:100%-10px;
+  border: 1px solid darkgray;
+  display: flex;
+  flex-direction: row;
+}
+.item{
+  width:100%;
+  border: 1px solid darkgray;
+}
+.function{
+  width:100%-10px;
+  border: 1px solid darkgray;
+  display: flex;
+  flex-direction: row;
+  margin-left: 80rpx;
+  margin-right: 80rpx;
+}

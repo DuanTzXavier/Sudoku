@@ -1,0 +1,17 @@
+<view class="tds">
+  <view class="content">
+    <text class="test" style="background-color:green">1</text>
+    <text class="test" style="background-color:blue">2</text>
+    <text class="test" style="background-color:yellow">3</text>
+  </view>
+  <view class="content">
+    <text class="test" style="background-color:green">1</text>
+    <text class="test" style="background-color:blue">2</text>
+    <text class="test" style="background-color:yellow">3</text>
+  </view>
+  <view class="content">
+    <text class="test" style="background-color:green">1</text>
+    <text class="test" style="background-color:blue">2</text>
+    <text class="test" style="background-color:yellow">3</text>
+  </view>
+</view>

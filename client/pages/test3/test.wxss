@@ -1,0 +1,25 @@
+/* pages/test3/test.wxss */
+
+.content {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 33.33%;
+}
+
+.tds {
+  width: 280rpx;
+  height: 280rpx;
+  border: 1px solid darkgray;
+  text-align: center;
+  line-height: 80rpx;
+}
+
+.content text {
+  font-size: 30rpx;
+}
+
+.test {
+  width: 100%;
+  height: 100%;
+}

@@ -1,5 +1,6 @@
 var util = require('../../utils/util.js')
 var sudoku = require('../../utils/sudoku.js')
+var sudokuui = require('../../utils/sudokuui.js')
 
 Page({
 
@@ -16,60 +17,11 @@ Page({
     // var datas = "200673040\n050020003\n000000009\n000000004\n000058001\n000017002\n000500428\n800000906\n600000007"
     // var datas = "020006005\n000307000\n005000009\n500100080\n104000903\n070004002\n800000700\n000703000\n300400050"
     var datas = "200080600\n003009740\n190650020\n600400830\n400026007\n078030004\n020067083\n046100500\n005040006"
-    var convertData = this.convertListData(datas)
+    var convertData = sudoku.convertNumberMap2Obj(datas)
     this.setData({
       listData: convertData,
       originListData: new Object(convertData)
     })
-  },
-
-  //构造闭包
-  convertListData: function (data) {
-    var dataList = new Array()
-    var dataLines = data.split("\n")
-    for (var line in dataLines) {
-      var lineItems = new Array()
-      var dataLineSplit = dataLines[line].split("")
-      for (var lineItem in dataLineSplit) {
-        var item = new Object()
-        if (dataLineSplit[lineItem] != 0) {
-          item.number = dataLineSplit[lineItem]
-          item.editable = false
-        } else {
-          item.editable = true
-        }
-        if (this.checkEdgeSquared(lineItem, line)) {
-          item.color = "burlywood"
-        } else {
-          item.color = "bisque"
-        }
-        item.position = lineItem + "" + line
-        lineItems.push(item)
-      }
-      var items = new Object()
-      items.items = lineItems
-      dataList.push(items)
-    }
-    return dataList
-  },
-
-  checkEdgeSquared: function (x, y) {
-    if ((x > 2 && x < 6) && (y <= 2)) {
-      return true
-    }
-
-    if ((x >= 6) && (y > 2 && y < 6)) {
-      return true
-    }
-
-    if ((x <= 2) && (y > 2 && y < 6)) {
-      return true
-    }
-
-    if ((x > 2 && x < 6) && (y >= 6)) {
-      return true
-    }
-    return false
   },
 
   click: function (event) {
@@ -139,52 +91,36 @@ Page({
 
   test: function () {
     this.data.listData = util.cloneObject(this.data.originListData)
+    var isChanged = false
+    var that = this
     for (var i = 0; i < 9; i++) {
       for (var j = 0; j < 9; j++) {
         var position = new Array()
         position.push(i)
         position.push(j)
         if (this.checkEditable(position)) {
-          this.nineNumberUnique(position)
+          sudoku.uniqueCandidate(that.data.listData, position, (candidates) => {
+            if (candidates == undefined || candidates.length == 0){
+              console.log("ERROR")//TODO 
+            }else if (candidates.length > 1){
+              //TODO 与其他方法叠加
+              that.data.listData[position[1]].items[position[0]].temp = candidates
+            } else if (candidates.length == 1){
+              that.setValue(position, candidates)
+              that.data.isAdd = true
+              isChanged = true
+            }
+          })
         }
       }
     }
-
-  },
-
-  nineNumberUnique: function (position) {
-    var AllNumber = util.cloneObject(this.data.ALL_NUMBER)
-
-    for (var index = 0; index < 9; index++) {
-      util.remove(AllNumber, this.data.listData[index].items[position[0]].number)
+    if (isChanged){
+      this.setData({
+        listData: this.data.listData,
+        // positions: positionList,
+        originListData: util.cloneObject(this.data.listData),
+      })
     }
-
-    for (var index = 0; index < 9; index++) {
-      util.remove(AllNumber, this.data.listData[position[1]].items[index].number)
-    }
-    var positionColumn = parseInt(position[0] / 3)
-    var positionRow = parseInt(position[1] / 3)
-    for (var x = positionRow * 3; x < positionRow * 3 + 3; x++) {
-      for (var y = positionColumn * 3; y < positionColumn * 3 + 3; y++) {
-        util.remove(AllNumber, this.data.listData[x].items[y].number)
-      }
-    }
-    var positionList = new Array()
-    if (AllNumber.length == 1) {
-      this.data.listData[position[1]].items[position[0]].editable = false
-      this.data.listData[position[1]].items[position[0]].number = AllNumber
-      this.data.isAdd = true
-    } else {
-      positionList.push(position)
-      this.data.listData[position[1]].items[position[0]].temp = AllNumber
-    }
-
-    this.setData({
-      listData: this.data.listData,
-      positions: positionList,
-      originListData: util.cloneObject(this.data.listData),
-      
-    })
   },
 
   test2: function () {
@@ -278,14 +214,17 @@ Page({
       this.data.listData[position[1]].items[position[0]].editable = false
       this.data.listData[position[1]].items[position[0]].number = value
       this.data.listData[position[1]].items[position[0]].temp = undefined
+      this.data.originListData[position[1]].items[position[0]].editable = false
+      this.data.originListData[position[1]].items[position[0]].number = value
+      this.data.originListData[position[1]].items[position[0]].temp = undefined
     } else {
       console.log("ERROR 0011 数独错误")
     }
   },
+
   test3: function () {
     this.findSquarePositionS()
 
-    
     for (var i = 0; i < 9; i++) {
       var arr = new Array()
       for (var j = 0; j < 9; j++) {
@@ -454,17 +393,29 @@ Page({
     }
   },
 
-  getRidOfY: function (temp, colomn, x){
+  getRidOfY: function (temp, column, x){
     for (var i = 0; i < 9; i++) {
       if (util.indexOf(x, i) == -1) {
-        if (this.data.listData[colomn].items[i].editable) {
-          util.remove(this.data.listData[i].items[colomn].temp, temp)
+        if (this.data.listData[column].items[i].editable) {
+          util.remove(this.data.listData[i].items[column].temp, temp)
           this.setData({
             listData: this.data.listData,
 
           })
         }
       }
+    }
+  },
+  click1: function(event){
+    if (this.data.lastClick == undefined){
+      return
+    }
+    
+    if (this.checkEditable(this.data.lastClick)){
+      this.setValue(this.data.lastClick, event.currentTarget.dataset.hi)
+      this.setData({
+        listData: this.data.listData,
+      })
     }
   }
 
