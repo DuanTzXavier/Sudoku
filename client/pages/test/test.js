@@ -44,7 +44,7 @@ Page({
     for (var i = 0; i < this.data.listData.length; i++) {
       for (var j = 0; j < this.data.listData[i].items.length; j++) {
         if (thisNumber == this.data.listData[i].items[j].number) {
-          this.data.listData[i].items[j].color = "cadetblue"
+          this.data.listData[i].items[j].color = "cornsilk"
         }
       }
     }
@@ -74,18 +74,18 @@ Page({
     var positionRow = parseInt(position[1] / 3)
     for (var x = positionRow * 3; x < positionRow * 3 + 3; x++) {
       for (var y = positionColumn * 3; y < positionColumn * 3 + 3; y++) {
-        this.data.listData[x].items[y].color = "cadetblue"
+        this.data.listData[x].items[y].color = "cornsilk"
       }
     }
   },
   selectColumn: function (position) {
     for (var index = 0; index < 9; index++) {
-      this.data.listData[index].items[position[0]].color = "cadetblue"
+      this.data.listData[index].items[position[0]].color = "cornsilk"
     }
   },
   selectRow: function (position) {
     for (var index = 0; index < 9; index++) {
-      this.data.listData[position[1]].items[index].color = "cadetblue"
+      this.data.listData[position[1]].items[index].color = "cornsilk"
     }
   },
 
@@ -105,8 +105,9 @@ Page({
             }else if (candidates.length > 1){
               //TODO 与其他方法叠加
               that.data.listData[position[1]].items[position[0]].temp = candidates
+              isChanged = true
             } else if (candidates.length == 1){
-              that.setValue(position, candidates)
+              that.userInputNumber(position, candidates)
               that.data.isAdd = true
               isChanged = true
             }
@@ -211,6 +212,13 @@ Page({
 
   setValue: function (position, value) {
     if (this.checkEditable(position)) {
+      if (sudoku.checkValidity(this.data.listData, position, value)) {
+        this.data.listData[position[1]].items[position[0]].textcolor = "darkgoldenrod"
+        this.data.originListData[position[1]].items[position[0]].textcolor = "darkgoldenrod"
+      } else {
+        this.data.listData[position[1]].items[position[0]].textcolor = "red"
+        this.data.originListData[position[1]].items[position[0]].textcolor = "red"
+      }
       this.data.listData[position[1]].items[position[0]].editable = false
       this.data.listData[position[1]].items[position[0]].number = value
       this.data.listData[position[1]].items[position[0]].temp = undefined
@@ -412,11 +420,49 @@ Page({
     }
     
     if (this.checkEditable(this.data.lastClick)){
-      this.setValue(this.data.lastClick, event.currentTarget.dataset.hi)
+      this.userInputNumber(this.data.lastClick, event.currentTarget.dataset.hi)
       this.setData({
         listData: this.data.listData,
       })
     }
+  },
+
+  userInputNumber: function (position, value){
+    if (this.checkEditable(position)) {
+      
+      this.data.listData[position[1]].items[position[0]].userInput = true
+      this.data.listData[position[1]].items[position[0]].number = value
+      this.data.listData[position[1]].items[position[0]].temp = undefined // TODO save temp
+
+      this.data.originListData[position[1]].items[position[0]].userInput = true
+      this.data.originListData[position[1]].items[position[0]].number = value
+      this.data.originListData[position[1]].items[position[0]].temp = undefined
+
+      if (sudoku.checkValidity(this.data.listData, position, value)) {
+        this.data.listData[position[1]].items[position[0]].textcolor = "darkgoldenrod"
+        this.data.originListData[position[1]].items[position[0]].textcolor = "darkgoldenrod"
+      } else {
+        this.data.listData[position[1]].items[position[0]].textcolor = "red"
+        this.data.originListData[position[1]].items[position[0]].textcolor = "red"
+      }
+    } else {
+      console.log("ERROR 0011 数独错误")
+    }
+  },
+
+  reset: function(){
+    this.onLoad()
+  },
+  resetposition: function(){
+    this.userInputNumber(this.data.lastClick, undefined)
+    this.setData({
+      listData: this.data.listData,
+    })
+  },
+
+  checkIsComplete: function(){
+    
+
   }
 
 

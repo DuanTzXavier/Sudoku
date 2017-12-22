@@ -1,7 +1,7 @@
 <view class="table">
   <view class="tr" wx:for="{{listData}}" wx:key="{{items}}">
     <view class="tds" data-hi="{{itemx.position}}" style="background:{{itemx.color}};" wx:for="{{item.items}}" wx:for-item="itemx" wx:key="itemx" bindtap='click'>
-      <text>{{itemx.number}}</text>
+      <text style="color:{{itemx.textcolor}};">{{itemx.number}}</text>
       <view class="temp">
         <text>{{itemx.temp}}</text>
       </view>
@@ -18,8 +18,8 @@
 
 <view class='row'>
   <view class='function'>
-    <text class='item'>1</text>
-    <text class='item'>1</text>
+    <text class='item' bindtap="reset">重置</text>
+    <text class='item' bindtap="resetposition">擦除</text>
     <text class='item'>1</text>
     <text class='item'>1</text>
   </view>

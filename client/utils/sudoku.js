@@ -36,6 +36,11 @@ var convertNumberMap2Obj = (numberMap) => {
   return dataList
 }
 
+/**
+ * 通过唯一值获取 position 格子中的唯一值
+ * 
+ * callback(allNumber) 返回这个格子中所有的唯一值
+ */
 var uniqueCandidate = (listData, position, callback) => {
   var allNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9,]
 
@@ -60,6 +65,62 @@ var uniqueCandidate = (listData, position, callback) => {
   }
 
   callback(allNumber)
+}
+
+/**
+ * 检查此位置所填的数字是否为有效的
+ */
+var checkValidity = (listData, position, value) => {
+  var isValidity = true
+  var allSetNumber = new Array()
+  //先添加这行和这列的数字
+  for (var index = 0; index < 9; index++) {
+    if (index != position[1]){
+      if (listData[index].items[position[0]].number == value){
+        listData[index].items[position[0]].textcolor = "red"
+        isValidity = false
+      } else if (listData[index].items[position[0]].editable == false){
+        listData[index].items[position[0]].textcolor = undefined
+      } else {
+        listData[index].items[position[0]].textcolor = "darkgoldenrod"
+      }
+    }
+  }
+
+  for (var index = 0; index < 9; index++) {
+    if (index != position[0]) {
+      if (listData[position[1]].items[index].number == value) {
+        listData[position[1]].items[index].textcolor = "red"
+        isValidity = false
+      } else if (listData[position[1]].items[index].editable == false) {
+        listData[position[1]].items[index].textcolor = undefined
+      } else {
+        listData[position[1]].items[index].textcolor = "darkgoldenrod"
+      }
+      // allSetNumber.push(listData[position[1]].items[index].number)
+    }
+  }
+
+  //然后求出position的九宫格的位置
+  var positionColumn = parseInt(position[0] / 3)
+  var positionRow = parseInt(position[1] / 3)
+
+  //添加九宫格内的数字
+  for (var x = positionRow * 3; x < positionRow * 3 + 3; x++) {
+    for (var y = positionColumn * 3; y < positionColumn * 3 + 3; y++) {
+      if (x != position[1] && y != position[0]){
+        if (listData[x].items[y].number == value) {
+          listData[x].items[y].textcolor = "red"
+          isValidity = false
+        } else if (listData[x].items[y].editable == false) {
+          listData[x].items[y].textcolor = undefined
+        } else {
+          listData[x].items[y].textcolor = "darkgoldenrod"
+        }
+      }
+    }
+  }
+  return isValidity
 }
 
 var test = callback => {
@@ -121,4 +182,4 @@ var isSpecial = (array) => {
   return true
 }
 
-module.exports = { convertNumberMap2Obj, uniqueCandidate, findUnique, saveOnlyOne, compareAll, isSpecial, test}
+module.exports = { convertNumberMap2Obj, uniqueCandidate, findUnique, saveOnlyOne, compareAll, isSpecial, test, checkValidity}
