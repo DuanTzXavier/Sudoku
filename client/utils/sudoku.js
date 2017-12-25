@@ -76,28 +76,13 @@ var checkValidity = (listData, position, value) => {
   //先添加这行和这列的数字
   for (var index = 0; index < 9; index++) {
     if (index != position[1]){
-      if (listData[index].items[position[0]].number == value){
-        listData[index].items[position[0]].textcolor = "red"
-        isValidity = false
-      } else if (listData[index].items[position[0]].editable == false){
-        listData[index].items[position[0]].textcolor = undefined
-      } else {
-        listData[index].items[position[0]].textcolor = "darkgoldenrod"
-      }
+      isValidity = sudokuui.showInValidity(listData, index, position[0], value)
     }
   }
 
   for (var index = 0; index < 9; index++) {
     if (index != position[0]) {
-      if (listData[position[1]].items[index].number == value) {
-        listData[position[1]].items[index].textcolor = "red"
-        isValidity = false
-      } else if (listData[position[1]].items[index].editable == false) {
-        listData[position[1]].items[index].textcolor = undefined
-      } else {
-        listData[position[1]].items[index].textcolor = "darkgoldenrod"
-      }
-      // allSetNumber.push(listData[position[1]].items[index].number)
+      isValidity = sudokuui.showInValidity(listData, position[1], index, value)
     }
   }
 
@@ -109,14 +94,7 @@ var checkValidity = (listData, position, value) => {
   for (var x = positionRow * 3; x < positionRow * 3 + 3; x++) {
     for (var y = positionColumn * 3; y < positionColumn * 3 + 3; y++) {
       if (x != position[1] && y != position[0]){
-        if (listData[x].items[y].number == value) {
-          listData[x].items[y].textcolor = "red"
-          isValidity = false
-        } else if (listData[x].items[y].editable == false) {
-          listData[x].items[y].textcolor = undefined
-        } else {
-          listData[x].items[y].textcolor = "darkgoldenrod"
-        }
+        isValidity = sudokuui.showInValidity(listData, x, y, value)
       }
     }
   }

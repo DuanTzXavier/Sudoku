@@ -57,6 +57,11 @@ Page({
   checkEditable: function (position) {
     return this.data.listData[position[1]].items[position[0]].editable
   },
+
+  isInputed: function (position) {
+    return this.data.listData[position[1]].items[position[0]].userInput != undefined && this.data.listData[position[1]].items[position[0]].userInput
+  },
+
   resumeLastClickPosition: function () {
     this.data.listData = util.cloneObject(this.data.originListData)
   },
@@ -98,16 +103,17 @@ Page({
         var position = new Array()
         position.push(i)
         position.push(j)
-        if (this.checkEditable(position)) {
+        if (this.checkEditable(position) && !this.isInputed(position)) {
           sudoku.uniqueCandidate(that.data.listData, position, (candidates) => {
             if (candidates == undefined || candidates.length == 0){
-              console.log("ERROR")//TODO 
+              console.log("ERROR candidates null" + position)//TODO 
+              console.log(candidates)
             }else if (candidates.length > 1){
               //TODO 与其他方法叠加
               that.data.listData[position[1]].items[position[0]].temp = candidates
               isChanged = true
             } else if (candidates.length == 1){
-              that.userInputNumber(position, candidates)
+              that.userInputNumber(position, candidates[0])
               that.data.isAdd = true
               isChanged = true
             }
@@ -121,6 +127,10 @@ Page({
         // positions: positionList,
         originListData: util.cloneObject(this.data.listData),
       })
+    }
+
+    if (this.checkIsComplete()){
+      console.log("全部完成")
     }
   },
 
@@ -453,7 +463,8 @@ Page({
   reset: function(){
     this.onLoad()
   },
-  resetposition: function(){
+
+  resetPosition: function(){
     this.userInputNumber(this.data.lastClick, undefined)
     this.setData({
       listData: this.data.listData,
@@ -461,9 +472,25 @@ Page({
   },
 
   checkIsComplete: function(){
-    
-
-  }
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        var position = new Array()
+        position.push(j)
+        position.push(i)
+        if (this.checkEditable(position)){
+          if (!this.isInputed(position)) {
+            return false
+          }
+          if (!sudoku.checkValidity(this.data.listData, position, this.data.listData[i].items[j].number)) {
+            console.log("test", position, this.data.listData[i].items[j])
+            return false
+          }
+        }
+        
+      }
+    }
+    return true
+  },
 
 
 })

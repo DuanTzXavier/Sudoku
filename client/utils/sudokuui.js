@@ -15,4 +15,17 @@ var isMiddleSubgrids = (x, y) => {
   return false
 }
 
-module.exports = { isMiddleSubgrids }
+var showInValidity = (listData, y, x, value) => {
+  var isValidity = true
+  if (listData[y].items[x].number == value) {
+    listData[y].items[x].textcolor = "red"
+    isValidity = false
+  } else if (listData[y].items[x].editable == false) {
+    listData[y].items[x].textcolor = undefined
+  } else {
+    listData[y].items[x].textcolor = "darkgoldenrod"
+  }
+  return isValidity
+}
+
+module.exports = { isMiddleSubgrids, showInValidity }
